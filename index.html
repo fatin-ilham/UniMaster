@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UniMaster - CGPA Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🎓 UniMaster - CGPA Planner</h1>
+
+  <form id="gpaForm">
+    <div id="courseInputs">
+      <input type="number" step="0.01" placeholder="Course 1 GPA" required />
+      <input type="number" step="0.01" placeholder="Course 2 GPA" required />
+      <input type="number" step="0.01" placeholder="Course 3 GPA" required />
+    </div>
+    <button type="button" onclick="addCourse()">+ Add Course</button>
+    <button type="submit">Submit Semester</button>
+  </form>
+
+  <div id="result">
+    <h2>Your CGPA: <span id="cgpa">0.00</span></h2>
+    <h3>Semesters Remaining: <span id="remaining">0</span></h3>
+  </div>
+
+  <canvas id="trendChart" width="600" height="300"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
