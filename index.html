@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>UniMaster - CGPA Planner</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UniMaster - University Progress Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🎓 UniMaster - CGPA Planner</h1>
+  <div class="container">
+    <h1>📚 UniMaster - Semester Progress Tracker</h1>
 
-  <form id="gpaForm">
-    <div id="courseInputs">
-      <input type="number" step="0.01" placeholder="Course 1 GPA" required />
-      <input type="number" step="0.01" placeholder="Course 2 GPA" required />
-      <input type="number" step="0.01" placeholder="Course 3 GPA" required />
+    <form id="semesterForm">
+      <input type="text" id="semesterName" placeholder="Semester Name (e.g. Spring 2025)" required>
+      <input type="number" step="0.01" id="gpa" placeholder="GPA (e.g. 3.25)" required>
+      <input type="number" id="credit" placeholder="Credits (e.g. 15)" required>
+      <button type="submit">➕ Add Semester</button>
+    </form>
+
+    <button id="resetButton" style="margin-top: 15px;">🗑️ Reset Data</button>
+
+    <div class="stats">
+      <p><strong>Total CGPA:</strong> <span id="cgpa">0.00</span></p>
+      <p><strong>Total Credits Completed:</strong> <span id="credits">0</span></p>
+      <p><strong>Total Credits Remaining:</strong> <span id="remaining">0</span></p>
     </div>
-    <button type="button" onclick="addCourse()">+ Add Course</button>
-    <button type="submit">Submit Semester</button>
-  </form>
 
-  <div id="result">
-    <h2>Your CGPA: <span id="cgpa">0.00</span></h2>
-    <h3>Semesters Remaining: <span id="remaining">0</span></h3>
+    <canvas id="gpaChart" width="400" height="200"></canvas>
   </div>
 
-  <canvas id="trendChart" width="600" height="300"></canvas>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
