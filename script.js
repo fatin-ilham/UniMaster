@@ -1,77 +1,97 @@
-let allSemesters = JSON.parse(localStorage.getItem("gpaData")) || [];
+let semesters = JSON.parse(localStorage.getItem("semesters")) || [];
 let chart;
 
-document.getElementById("gpaForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const inputs = document.querySelectorAll("#courseInputs input");
-  const gpas = [];
-
-  inputs.forEach(input => {
-    const val = parseFloat(input.value);
-    if (!isNaN(val)) gpas.push(val);
-  });
-
-  if (gpas.length < 3) {
-    alert("Enter at least 3 course GPAs.");
-    return;
-  }
-
-  const semesterGPA = (gpas.reduce((a, b) => a + b, 0)) / gpas.length;
-  allSemesters.push(semesterGPA.toFixed(2));
-  localStorage.setItem("gpaData", JSON.stringify(allSemesters));
-
-  updateDisplay();
-});
-
-function updateDisplay() {
-  const total = allSemesters.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-  const cgpa = total / allSemesters.length;
-  document.getElementById("cgpa").textContent = cgpa.toFixed(2);
-  document.getElementById("remaining").textContent = 12 - allSemesters.length;
-
-  drawChart();
-}
-
-function drawChart() {
-  const ctx = document.getElementById("trendChart").getContext("2d");
+function updateChart() {
+  const labels = semesters.map(s => s.name);
+  const data = semesters.map(s => s.gpa);
 
   if (chart) chart.destroy();
 
+  const ctx = document.getElementById("gpaChart").getContext("2d");
   chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: allSemesters.map((_, i) => `Semester ${i + 1}`),
+      labels: labels,
       datasets: [{
-        label: "Semester GPA",
-        data: allSemesters,
-        backgroundColor: "rgba(57, 255, 20, 0.2)",
-        borderColor: "#39ff14",
-        borderWidth: 2,
+        label: "GPA Trend",
+        data: data,
+        borderColor: "#00ffcc",
+        backgroundColor: "#004d4d",
         tension: 0.3,
-        fill: true,
-      }],
+      }]
     },
     options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#00ffcc'
+          }
+        }
+      },
       scales: {
+        x: {
+          ticks: {
+            color: '#00ffcc'
+          }
+        },
         y: {
           beginAtZero: true,
-          suggestedMax: 4
+          max: 4.0,
+          ticks: {
+            color: '#00ffcc'
+          }
         }
       }
     }
   });
 }
 
-function addCourse() {
-  const courseInputs = document.getElementById("courseInputs");
-  if (courseInputs.children.length < 5) {
-    const input = document.createElement("input");
-    input.type = "number";
-    input.step = "0.01";
-    input.placeholder = `Course ${courseInputs.children.length + 1} GPA`;
-    courseInputs.appendChild(input);
-  }
+function calculateStats() {
+  let totalPoints = 0;
+  let totalCredits = 0;
+  semesters.forEach(({ gpa, credit }) => {
+    totalPoints += gpa * credit;
+    totalCredits += credit;
+  });
+
+  const cgpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
+  const remaining = Math.max(0, 130 - totalCredits);
+
+  document.getElementById("cgpa").textContent = cgpa;
+  document.getElementById("credits").textContent = totalCredits;
+  document.getElementById("remaining").textContent = remaining;
 }
 
-updateDisplay();
+document.getElementById("semesterForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const name = document.getElementById("semesterName").value.trim();
+  const gpa = parseFloat(document.getElementById("gpa").value.trim());
+  const credit = parseInt(document.getElementById("credit").value.trim());
+
+  if (!name || isNaN(gpa) || isNaN(credit)) {
+    alert("Please fill in all fields correctly.");
+    return;
+  }
+
+  semesters.push({ name, gpa, credit });
+  localStorage.setItem("semesters", JSON.stringify(semesters));
+
+  this.reset();
+  calculateStats();
+  updateChart();
+});
+
+document.getElementById("resetButton").addEventListener("click", () => {
+  if (confirm("Are you sure you want to reset all saved data?")) {
+    localStorage.removeItem("semesters");
+    semesters = [];
+    document.getElementById("cgpa").textContent = "0.00";
+    document.getElementById("credits").textContent = "0";
+    document.getElementById("remaining").textContent = "0";
+    if (chart) chart.destroy();
+  }
+});
+
+calculateStats();
+updateChart();
