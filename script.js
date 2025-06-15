@@ -1,97 +1,53 @@
-let semesters = JSON.parse(localStorage.getItem("semesters")) || [];
-let chart;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UniMaster - University Progress Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📚 UniMaster - Semester Progress Tracker</h1>
 
-function updateChart() {
-  const labels = semesters.map(s => s.name);
-  const data = semesters.map(s => s.gpa);
+    <form id="semesterForm">
+      <input type="text" id="semesterName" placeholder="Semester Name (e.g. Spring 2025)" required>
+      <input type="number" step="0.01" id="gpa" placeholder="GPA (e.g. 3.25)" required>
+      <input type="number" id="credit" placeholder="Credits (e.g. 15)" required>
 
-  if (chart) chart.destroy();
+      <input type="text" id="course1" placeholder="Course 1 Name">
+      <input type="text" id="course2" placeholder="Course 2 Name">
+      <input type="text" id="course3" placeholder="Course 3 Name">
+      <input type="text" id="course4" placeholder="Course 4 Name">
+      <input type="text" id="course5" placeholder="Course 5 Name">
 
-  const ctx = document.getElementById("gpaChart").getContext("2d");
-  chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "GPA Trend",
-        data: data,
-        borderColor: "#00ffcc",
-        backgroundColor: "#004d4d",
-        tension: 0.3,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          labels: {
-            color: '#00ffcc'
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: '#00ffcc'
-          }
-        },
-        y: {
-          beginAtZero: true,
-          max: 4.0,
-          ticks: {
-            color: '#00ffcc'
-          }
-        }
-      }
-    }
-  });
-}
+      <input type="text" id="currentSemester" placeholder="Current Semester (e.g. 7th)" required>
+      <input type="number" id="totalCreditsRequired" placeholder="Total Credits to Graduate (e.g. 130)" required>
+      <input type="number" id="creditsCompleted" placeholder="Credits Completed So Far (e.g. 78)" required>
 
-function calculateStats() {
-  let totalPoints = 0;
-  let totalCredits = 0;
-  semesters.forEach(({ gpa, credit }) => {
-    totalPoints += gpa * credit;
-    totalCredits += credit;
-  });
+      <button type="submit">➕ Add Semester</button>
+    </form>
 
-  const cgpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
-  const remaining = Math.max(0, 130 - totalCredits);
+    <button id="resetButton" style="margin-top: 15px;">🗑️ Reset Data</button>
 
-  document.getElementById("cgpa").textContent = cgpa;
-  document.getElementById("credits").textContent = totalCredits;
-  document.getElementById("remaining").textContent = remaining;
-}
+    <div class="stats">
+      <p><strong>Total CGPA:</strong> <span id="cgpa">0.00</span></p>
+      <p><strong>Total Credits Completed:</strong> <span id="credits">0</span></p>
+      <p><strong>Total Credits Remaining:</strong> <span id="remaining">0</span></p>
+      <p><strong>Current Semester:</strong> <span id="currentSem">-</span></p>
+      <p><strong>Estimated Semesters Left:</strong></p>
+      <ul>
+        <li>📘 With 9 credits/semester: <span id="sem9">-</span></li>
+        <li>📗 With 12 credits/semester: <span id="sem12">-</span></li>
+        <li>📙 With 15 credits/semester: <span id="sem15">-</span></li>
+      </ul>
+    </div>
 
-document.getElementById("semesterForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const name = document.getElementById("semesterName").value.trim();
-  const gpa = parseFloat(document.getElementById("gpa").value.trim());
-  const credit = parseInt(document.getElementById("credit").value.trim());
+    <canvas id="gpaChart" width="400" height="200"></canvas>
+  </div>
 
-  if (!name || isNaN(gpa) || isNaN(credit)) {
-    alert("Please fill in all fields correctly.");
-    return;
-  }
+  <script src="script.js"></script>
+</body>
+</html>
 
-  semesters.push({ name, gpa, credit });
-  localStorage.setItem("semesters", JSON.stringify(semesters));
-
-  this.reset();
-  calculateStats();
-  updateChart();
-});
-
-document.getElementById("resetButton").addEventListener("click", () => {
-  if (confirm("Are you sure you want to reset all saved data?")) {
-    localStorage.removeItem("semesters");
-    semesters = [];
-    document.getElementById("cgpa").textContent = "0.00";
-    document.getElementById("credits").textContent = "0";
-    document.getElementById("remaining").textContent = "0";
-    if (chart) chart.destroy();
-  }
-});
-
-calculateStats();
-updateChart();
