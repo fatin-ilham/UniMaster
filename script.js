@@ -76,27 +76,34 @@ document.getElementById("semesterForm").addEventListener("submit", function (e) 
   e.preventDefault();
 
   const name = document.getElementById("semesterName").value.trim();
-  const gpa = parseFloat(document.getElementById("gpa").value.trim());
-  const credit = parseInt(document.getElementById("credit").value.trim());
   const currentSemester = document.getElementById("currentSemester").value.trim();
   const totalCreditsRequired = parseInt(document.getElementById("totalCreditsRequired").value.trim());
   const creditsCompleted = parseInt(document.getElementById("creditsCompleted").value.trim());
 
-  if (!name || isNaN(gpa) || isNaN(credit) || isNaN(totalCreditsRequired) || isNaN(creditsCompleted)) {
-    alert("Please fill in all required fields correctly.");
+  const courses = [];
+  let courseTotalPoints = 0;
+  let courseCount = 0;
+
+  for (let i = 1; i <= 5; i++) {
+    const courseName = document.getElementById(`course${i}Name`).value.trim();
+    const courseGPA = parseFloat(document.getElementById(`course${i}GPA`).value.trim());
+
+    if (courseName && !isNaN(courseGPA)) {
+      courses.push({ name: courseName, gpa: courseGPA });
+      courseTotalPoints += courseGPA * 3; // 3 credit per course
+      courseCount++;
+    }
+  }
+
+  if (!name || courseCount === 0 || isNaN(totalCreditsRequired) || isNaN(creditsCompleted)) {
+    alert("Please enter at least one valid course and required info.");
     return;
   }
 
-  // Optional course fields (just saved for now if needed later)
-  const courses = [
-    document.getElementById("course1").value.trim(),
-    document.getElementById("course2").value.trim(),
-    document.getElementById("course3").value.trim(),
-    document.getElementById("course4").value.trim(),
-    document.getElementById("course5").value.trim()
-  ];
+  const semesterCredit = courseCount * 3;
+  const semesterGPA = (courseTotalPoints / semesterCredit).toFixed(2);
 
-  semesters.push({ name, gpa, credit, courses });
+  semesters.push({ name, gpa: parseFloat(semesterGPA), credit: semesterCredit, courses });
   localStorage.setItem("semesters", JSON.stringify(semesters));
   localStorage.setItem("currentSemester", currentSemester);
   localStorage.setItem("totalCreditsRequired", totalCreditsRequired);
@@ -124,4 +131,3 @@ document.getElementById("resetButton").addEventListener("click", () => {
 
 calculateStats();
 updateChart();
-
