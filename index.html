@@ -3,62 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UniMaster - University Progress Tracker</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>SemRemainder - Track Your Graduation</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>📚 UniMaster - Semester Progress Tracker</h1>
+    <h1>🎓 SemRemainder - Track Your Graduation</h1>
 
-    <form id="semesterForm">
-      <input type="text" id="semesterName" placeholder="Semester Name (e.g. Spring 2025)" required>
-
-      <h3>Courses (Each assumed 3 credits):</h3>
-      <div class="course">
-        <input type="text" id="course1Name" placeholder="Course 1 Name">
-        <input type="number" step="0.01" id="course1GPA" placeholder="Course 1 GPA">
-      </div>
-      <div class="course">
-        <input type="text" id="course2Name" placeholder="Course 2 Name">
-        <input type="number" step="0.01" id="course2GPA" placeholder="Course 2 GPA">
-      </div>
-      <div class="course">
-        <input type="text" id="course3Name" placeholder="Course 3 Name">
-        <input type="number" step="0.01" id="course3GPA" placeholder="Course 3 GPA">
-      </div>
-      <div class="course">
-        <input type="text" id="course4Name" placeholder="Course 4 Name">
-        <input type="number" step="0.01" id="course4GPA" placeholder="Course 4 GPA">
-      </div>
-      <div class="course">
-        <input type="text" id="course5Name" placeholder="Course 5 Name">
-        <input type="number" step="0.01" id="course5GPA" placeholder="Course 5 GPA">
-      </div>
-
-      <input type="text" id="currentSemester" placeholder="Current Semester (e.g. 7th)" required>
+    <form id="creditForm">
       <input type="number" id="totalCreditsRequired" placeholder="Total Credits to Graduate (e.g. 130)" required>
       <input type="number" id="creditsCompleted" placeholder="Credits Completed So Far (e.g. 78)" required>
-
-      <button type="submit">➕ Add Semester</button>
+      <button type="submit">📊 Calculate</button>
     </form>
 
-    <button id="resetButton" style="margin-top: 15px;">🗑️ Reset Data</button>
-
-    <div class="stats">
-      <p><strong>Total CGPA:</strong> <span id="cgpa">0.00</span></p>
-      <p><strong>Total Credits Completed:</strong> <span id="credits">0</span></p>
-      <p><strong>Total Credits Remaining:</strong> <span id="remaining">0</span></p>
-      <p><strong>Current Semester:</strong> <span id="currentSem">-</span></p>
-      <p><strong>Estimated Semesters Left:</strong></p>
+    <div class="stats" style="margin-top: 20px;">
+      <p><strong>Total Credits Completed:</strong> <span id="credits">-</span></p>
+      <p><strong>Total Credits Remaining:</strong> <span id="remaining">-</span></p>
+      <p><strong>Estimated Semesters Needed:</strong></p>
       <ul>
-        <li>📘 With 9 credits/semester: <span id="sem9">-</span></li>
-        <li>📗 With 12 credits/semester: <span id="sem12">-</span></li>
-        <li>📙 With 15 credits/semester: <span id="sem15">-</span></li>
+        <li>🟦 With 9 credits/semester: <span id="sem9">-</span></li>
+        <li>🟩 With 12 credits/semester: <span id="sem12">-</span></li>
+        <li>🟨 With 15 credits/semester: <span id="sem15">-</span></li>
       </ul>
     </div>
-
-    <canvas id="gpaChart" width="400" height="200"></canvas>
   </div>
 
   <script src="script.js"></script>
