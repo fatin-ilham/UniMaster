@@ -1,4 +1,4 @@
-
+/* Global Styles */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
@@ -9,7 +9,7 @@ body {
   margin: 0;
 }
 
-
+/* Container */
 .container {
   background-color: #1c1c1c;
   border: 1px solid #333;
@@ -20,14 +20,14 @@ body {
   box-shadow: 0 0 20px rgba(0, 255, 120, 0.1);
 }
 
-
+/* Header */
 h1 {
   font-size: 1.8em;
   margin-bottom: 25px;
   color: #39ff14;
 }
 
-
+/* Form Inputs */
 input {
   width: 80%;
   margin: 8px 0;
@@ -46,7 +46,7 @@ input:focus {
   box-shadow: 0 0 5px #39ff14aa;
 }
 
-
+/* Buttons */
 button {
   margin-top: 15px;
   padding: 10px 20px;
@@ -65,7 +65,7 @@ button:hover {
   transform: scale(1.05);
 }
 
-
+/* Stats */
 .stats {
   margin-top: 30px;
   font-size: 16px;
@@ -89,4 +89,35 @@ button:hover {
 
 .stats li {
   margin: 6px 0;
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  background-color: #0f0f0f;
+  border-top: 1px solid #222;
+}
+
+footer p {
+  margin: 5px;
+  color: #aaa;
+}
+
+.socials a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #39ff14;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.socials a:hover {
+  color: #2ad300;
+}
+
+.credit {
+  font-size: 13px;
+  color: #666;
+  margin-top: 10px;
 }
