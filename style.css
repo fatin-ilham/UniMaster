@@ -157,3 +157,18 @@ select option {
   background-color: #1c1c1c;
   color: #e0ffe0;
 }
+
+
+.info-text {
+  width: 80%;
+  margin: 10px auto 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #9dff9d;
+  background-color: #1c1c1c;
+  border-left: 3px solid #39ff14;
+  padding: 10px 12px;
+  border-radius: 6px;
+  text-align: left;
+}
+
