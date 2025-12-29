@@ -22,7 +22,7 @@ document.getElementById("creditForm").addEventListener("submit", function (e) {
   let sem12 = Math.ceil(remaining / 12);
   let sem15 = Math.ceil(remaining / 15);
 
-  // 🔥 Thesis condition
+ 
   if (thesisTiming === "early2") {
     sem9 += 1;
     sem12 += 1;
@@ -38,12 +38,20 @@ document.getElementById("creditForm").addEventListener("submit", function (e) {
   
   }
 
+  if (thesisTiming === "early3"){
+  sem9 += 3
+  sem12 += 3
+  sem15 += 3
+  
+  }
+
   document.getElementById("credits").textContent = creditsCompleted;
   document.getElementById("remaining").textContent = remaining;
   document.getElementById("sem9").textContent = sem9;
   document.getElementById("sem12").textContent = sem12;
   document.getElementById("sem15").textContent = sem15;
 });
+
 
 
 
