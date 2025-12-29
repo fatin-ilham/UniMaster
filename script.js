@@ -3,17 +3,37 @@ document.getElementById("creditForm").addEventListener("submit", function (e) {
 
   const totalCreditsRequired = parseInt(document.getElementById("totalCreditsRequired").value.trim());
   const creditsCompleted = parseInt(document.getElementById("creditsCompleted").value.trim());
+  const thesisTiming = document.getElementById("thesisTiming").value;
 
-  if (isNaN(totalCreditsRequired) || isNaN(creditsCompleted) || totalCreditsRequired <= 0 || creditsCompleted < 0) {
-    alert("Please enter valid credit numbers.");
+  if (
+    isNaN(totalCreditsRequired) ||
+    isNaN(creditsCompleted) ||
+    totalCreditsRequired <= 0 ||
+    creditsCompleted < 0 ||
+    thesisTiming === ""
+  ) {
+    alert("Please enter valid information.");
     return;
   }
 
   const remaining = Math.max(0, totalCreditsRequired - creditsCompleted);
 
+  let sem9 = Math.ceil(remaining / 9);
+  let sem12 = Math.ceil(remaining / 12);
+  let sem15 = Math.ceil(remaining / 15);
+
+  // 🔥 Thesis condition
+  if (thesisTiming === "early") {
+    sem9 += 3;
+    sem12 += 3;
+    sem15 += 3;
+  }
+
   document.getElementById("credits").textContent = creditsCompleted;
   document.getElementById("remaining").textContent = remaining;
-  document.getElementById("sem9").textContent = Math.ceil(remaining / 9);
-  document.getElementById("sem12").textContent = Math.ceil(remaining / 12);
-  document.getElementById("sem15").textContent = Math.ceil(remaining / 15);
+  document.getElementById("sem9").textContent = sem9;
+  document.getElementById("sem12").textContent = sem12;
+  document.getElementById("sem15").textContent = sem15;
 });
+
+
